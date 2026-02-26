@@ -6,7 +6,6 @@ import VimeoPlayer from './components/VimeoPlayer';
 const App: React.FC = () => {
   const [showCalendly, setShowCalendly] = useState(false);
   const [displayText, setDisplayText] = useState('');
-  const [isBlockStyle, setIsBlockStyle] = useState(false);
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const calendlyRef = useRef<HTMLDivElement>(null);
 
@@ -19,14 +18,7 @@ const App: React.FC = () => {
     const timer = setInterval(() => {
       setDisplayText(fullHeadline.slice(0, i));
       i++;
-      if (i > fullHeadline.length) {
-        clearInterval(timer);
-        // After typing finishes, enable the block style toggle animation
-        const toggleInterval = setInterval(() => {
-          setIsBlockStyle(prev => !prev);
-        }, 1000); // 1.0 second for a slower, more deliberate effect
-        return () => clearInterval(toggleInterval);
-      }
+      if (i > fullHeadline.length) clearInterval(timer);
     }, 40);
     return () => clearInterval(timer);
   }, []);
@@ -60,22 +52,18 @@ const App: React.FC = () => {
         <div className="max-w-5xl w-full text-center space-y-16">
           
           <div className="animate-fade-in space-y-8">
-            <h1 className={`text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.2] transition-all duration-300 min-h-[4em] md:min-h-[2.5em] flex flex-wrap justify-center gap-y-2 ${isBlockStyle ? 'text-white' : 'text-white'}`}>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.1] text-white min-h-[3.5em] md:min-h-[2.2em]">
               {displayText.split(' ').map((word, i) => (
                 <span 
                   key={i} 
-                  className={`px-2 py-1 transition-all duration-150 ${
-                    isBlockStyle 
-                      ? 'bg-[#F27D26] text-white shadow-[4px_4px_0px_rgba(0,0,0,1)]' 
-                      : word === 'CLIENTS' 
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 drop-shadow-[0_0_25px_rgba(234,88,12,0.6)] glow-text-orange' 
-                        : 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]'
-                  }`}
+                  className={word === 'CLIENTS' 
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 drop-shadow-[0_0_25px_rgba(234,88,12,0.6)] glow-text-orange' 
+                    : 'drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]'}
                 >
-                  {word}
+                  {word}{' '}
                 </span>
               ))}
-              <span className={`inline-block w-1 h-[1em] bg-orange-500 ml-1 animate-pulse align-middle shadow-[0_0_15px_rgba(234,88,12,0.8)] ${isBlockStyle ? 'hidden' : ''}`}></span>
+              <span className="inline-block w-1 h-[1em] bg-orange-500 ml-1 animate-pulse align-middle shadow-[0_0_15px_rgba(234,88,12,0.8)]"></span>
             </h1>
             <p className="text-xl md:text-3xl font-bold text-gray-200 max-w-3xl mx-auto leading-relaxed border-l-4 border-orange-500 pl-6 italic">
               Without Ads. Without Cold DMs. <br className="hidden md:block"/>Without Posting Every Day.
