@@ -1,8 +1,18 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import InteractiveBackground from './InteractiveBackground';
 
 const BackgroundVideo: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(err => {
+        console.warn("Background video autoplay failed:", err);
+      });
+    }
+  }, []);
+
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
       <InteractiveBackground />
@@ -10,6 +20,7 @@ const BackgroundVideo: React.FC = () => {
       {/* Video Layer */}
       <div className="absolute inset-0 opacity-[0.1]">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted

@@ -26,10 +26,11 @@ const VimeoPlayer: React.FC<VimeoPlayerProps> = ({ onReachThreshold }) => {
       byline: false,
       portrait: false,
       controls: true,
+      playsinline: true,
     };
 
     const initPlayer = () => {
-      if (containerRef.current && typeof Vimeo !== 'undefined') {
+      if (containerRef.current && typeof Vimeo !== 'undefined' && !playerRef.current) {
         playerRef.current = new Vimeo.Player(containerRef.current, options);
 
         playerRef.current.on('timeupdate', (data: { percent: number }) => {
@@ -40,9 +41,17 @@ const VimeoPlayer: React.FC<VimeoPlayerProps> = ({ onReachThreshold }) => {
           }
         });
 
-        // Debug log to ensure player is working
+        // Force play after ready, ensuring it's muted to satisfy browser policies
         playerRef.current.ready().then(() => {
           console.log('Vimeo Player Ready');
+          // Small delay to ensure browser is ready for autoplay
+          setTimeout(() => {
+            playerRef.current.setMuted(true).then(() => {
+              playerRef.current.play().catch((error: any) => {
+                console.warn('Autoplay failed, user interaction needed:', error);
+              });
+            });
+          }, 500);
         });
       }
     };
