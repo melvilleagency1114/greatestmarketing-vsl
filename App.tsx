@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import BackgroundVideo from './components/BackgroundVideo';
 import VimeoPlayer from './components/VimeoPlayer';
+import TestimonialSection from './components/TestimonialSection';
 
 const App: React.FC = () => {
   const [showCalendly, setShowCalendly] = useState(false);
@@ -123,6 +124,8 @@ const App: React.FC = () => {
                 Limited Availability: We only take 3 clients/week
               </p>
             </div>
+            
+            <TestimonialSection />
           </div>
         </div>
       </main>

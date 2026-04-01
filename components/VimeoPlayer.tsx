@@ -13,13 +13,13 @@ const VimeoPlayer: React.FC<VimeoPlayerProps> = ({ onReachThreshold }) => {
   const hasTriggered = useRef(false);
 
   useEffect(() => {
-    // Vimeo Video ID: 1165329797
-    const videoId = "1165329797";
+    // Vimeo Video ID: 1179196970
+    const videoId = "1179196970";
     
     const options = {
       id: videoId,
       autoplay: true,
-      muted: true,
+      muted: false,
       loop: false,
       responsive: true,
       title: false,
@@ -27,6 +27,7 @@ const VimeoPlayer: React.FC<VimeoPlayerProps> = ({ onReachThreshold }) => {
       portrait: false,
       controls: true,
       playsinline: true,
+      autopause: false,
     };
 
     const initPlayer = () => {
@@ -41,17 +42,17 @@ const VimeoPlayer: React.FC<VimeoPlayerProps> = ({ onReachThreshold }) => {
           }
         });
 
-        // Force play after ready, ensuring it's muted to satisfy browser policies
+        // Force play after ready
         playerRef.current.ready().then(() => {
-          console.log('Vimeo Player Ready');
-          // Small delay to ensure browser is ready for autoplay
-          setTimeout(() => {
-            playerRef.current.setMuted(true).then(() => {
-              playerRef.current.play().catch((error: any) => {
-                console.warn('Autoplay failed, user interaction needed:', error);
-              });
-            });
-          }, 500);
+          // Attempt to play unmuted first
+          playerRef.current.setMuted(false);
+          playerRef.current.setVolume(1);
+          playerRef.current.play().catch((error: any) => {
+            console.warn('Unmuted autoplay failed, trying muted fallback:', error);
+            // Fallback to muted autoplay if unmuted is blocked by browser
+            playerRef.current.setMuted(true);
+            playerRef.current.play();
+          });
         });
       }
     };
