@@ -82,6 +82,27 @@ const App: React.FC = () => {
             <VimeoPlayer onReachThreshold={handleVideoThreshold} />
           </div>
 
+          {/* New Immediate CTA Button */}
+          <div className="animate-fade-in flex flex-col items-center py-4" style={{ animationDelay: '0.3s' }}>
+            <a
+              href={calendlyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-glow group relative inline-flex items-center justify-center px-12 py-6 text-2xl md:text-3xl font-black text-white bg-orange-600 rounded-2xl overflow-hidden active:scale-95 transition-all duration-300 shadow-[0_0_30px_rgba(234,88,12,0.3)]"
+            >
+              <span className="relative z-10 tracking-tighter uppercase">Book Your Strategy Call Now →</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </a>
+            <div className="mt-6 flex items-center space-x-3 text-orange-500/80 font-bold text-sm tracking-widest uppercase">
+              <span className="w-8 h-[1px] bg-orange-500/30"></span>
+              <span>Skip the video & secure your spot</span>
+              <span className="w-8 h-[1px] bg-orange-500/30"></span>
+            </div>
+            <p className="mt-2 text-xs text-gray-500 uppercase tracking-widest font-medium">
+              ⚡ Only 3 spots left for this week
+            </p>
+          </div>
+
           {showCalendly && (
             <div 
               ref={calendlyRef}
